@@ -1,27 +1,24 @@
 const users = require('express').Router();
 const path = require('path');
 const readDataFromFile = require('./helpers.js');
-users.get('/', (req, res) => {
-  const getData = async function () {
-    res.send(await readDataFromFile(path.resolve(__dirname, '../data/users.json')));
-  }
-  getData();
+
+users.get('/', async function (req, res) {
+  res.send(await readDataFromFile(path.resolve(__dirname, '../data/users.json')))
 });
-users.get('/:id', (req, res) => {
+
+users.get('/:id', async function (req, res) {
   const { id } = req.params;
-  const getData = async function () {
-    let usersArray = JSON.parse(await readDataFromFile(path.resolve(__dirname, '../data/users.json')));
-    usersArray = Object.values(usersArray).map(value => Object.values(value));
-    const user = usersArray.find(user => {
-      return user[3] === id;
-    });
-    if (user) {
-      res.send(user);
-    }
-    else {
-      res.status(404).send({ "message": `Нет пользователя с id ${id}` });
-    }
+  let usersArray = JSON.parse(await readDataFromFile(path.resolve(__dirname, '../data/users.json')));
+  usersArray = Object.values(usersArray).map(value => Object.values(value));
+  const user = usersArray.find(user => {
+    return user[3] === id;
+  });
+  if (user) {
+    res.send(user);
   }
-  getData();
+  else {
+    res.status(404).send({ "message": `Нет пользователя с id ${id}` });
+  }
 });
+
 module.exports = users;
