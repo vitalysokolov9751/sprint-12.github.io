@@ -11,8 +11,6 @@ module.exports = {
         "SharedArrayBuffer": "readonly"
     },
     "plugins": [
-        "react",
-        "@typescript-eslint"
     ],
     "rules": {
     }
