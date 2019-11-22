@@ -8,8 +8,14 @@ users.get('/', async function (req, res) {
 
 users.get('/:id', async function (req, res) {
   const { id } = req.params;
-  let usersArray = JSON.parse(await readDataFromFile(path.resolve(__dirname, '../data/users.json')));
-  usersArray = Object.values(usersArray).map(value => Object.values(value));
+  let data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
+  try {
+    data = JSON.parse(data);
+  }
+  catch {
+    return res.status(500).send({ "message": 'Bad users.json' });
+  }
+  usersArray = Object.values(data).map(value => Object.values(value));
   const user = usersArray.find(user => {
     return user[3] === id;
   });
