@@ -4,13 +4,13 @@ const readDataFromFile = function (fileName) {
   return new Promise((resolve, reject) => {
     fs.readFile(fileName, 'utf8', (err, data) => {
       if (err) {
-        reject(err)
+        reject(err);
       }
       else {
-        resolve(data)
+        resolve(data);
       }
-    })
-  })
-}
+    });
+  });
+};
 
 module.exports = readDataFromFile;

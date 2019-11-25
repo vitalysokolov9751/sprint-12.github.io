@@ -3,20 +3,24 @@ const path = require('path');
 const readDataFromFile = require('./helpers.js');
 
 users.get('/', async function (req, res) {
-  res.send(await readDataFromFile(path.resolve(__dirname, '../data/users.json')))
+  const data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
+  res.format({
+    'application/json': function () {
+      res.send(data)
+    },
+  })
 });
 
 users.get('/:id', async function (req, res) {
   const { id } = req.params;
   let data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
   try {
-    data = JSON.parse(data);
+    data = Object.values(JSON.parse(data)).map(value => Object.values(value))
   }
   catch {
     return res.status(500).send({ "message": 'Bad users.json' });
   }
-  usersArray = Object.values(data).map(value => Object.values(value));
-  const user = usersArray.find(user => {
+  const user = data.find(user => {
     return user[3] === id;
   });
   if (user) {
