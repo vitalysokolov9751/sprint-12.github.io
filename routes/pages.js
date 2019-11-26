@@ -1,7 +1,3 @@
-const page404 = require('express').Router();
-
-page404.get('*', (req, res) => {
-  res.status(404).send({ "error": `error 404` });
+module.exports = require('express').Router().get('*', (req, res) => {
+  res.status(404).send({ error: 'error 404' });
 });
-
-module.exports = page404;
