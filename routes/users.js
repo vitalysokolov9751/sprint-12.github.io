@@ -4,12 +4,7 @@ const readDataFromFile = require('./helpers.js');
 
 users.get('/', async (req, res) => {
   const data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
-  res.format({
-    // eslint-disable-next-line func-names
-    'application/json': function () {
-      res.send(data);
-    },
-  });
+  res.send(JSON.parse(data));
 });
 
 users.get('/:id', async (req, res) => {
@@ -21,7 +16,7 @@ users.get('/:id', async (req, res) => {
     return res.status(500).send({ message: 'Bad users.json' });
   }
   // eslint-disable-next-line no-shadow
-  const user = data.find((user) => user[3] === id);
+  const user = data.find((user) => user.id === id);
   if (user) {
     res.send(user);
   } else {
