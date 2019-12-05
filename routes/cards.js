@@ -3,8 +3,12 @@ const path = require('path');
 const readDataFromFile = require('./helpers');
 
 cards.get('/', async (_req, res) => {
-  const data = await readDataFromFile(path.resolve(__dirname, '../data/cards.json'));
-  res.send(JSON.parse(data));
+  try {
+    const data = await readDataFromFile(path.resolve(__dirname, '../data/cards.json'));
+    return res.send(JSON.parse(data));
+  } catch (e) {
+    return res.status(500).send({ message: 'Can`t read from cards.json' });
+  }
 });
 
 module.exports = cards;

@@ -3,10 +3,15 @@ const path = require('path');
 const readDataFromFile = require('./helpers.js');
 
 users.get('/', async (req, res) => {
-  const data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
-  res.send(JSON.parse(data));
+  try {
+    const data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
+    return res.send(JSON.parse(data));
+  } catch (e) {
+    return res.status(500).send({ message: 'Can`t read from users.json' });
+  }
 });
 
+// eslint-disable-next-line consistent-return
 users.get('/:id', async (req, res) => {
   const { id } = req.params;
   let data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
@@ -22,7 +27,6 @@ users.get('/:id', async (req, res) => {
   } else {
     res.status(404).send({ message: `Нет пользователя с id ${id}` });
   }
-  return user;
 });
 
 module.exports = users;
