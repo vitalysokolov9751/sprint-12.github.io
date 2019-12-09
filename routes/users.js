@@ -17,9 +17,9 @@ users.get('/:id', async (req, res) => {
   try {
     // eslint-disable-next-line no-unused-vars
     let data = await readDataFromFile(path.resolve(__dirname, '../data/users.json'));
-    data = Object.values(JSON.parse(data)).map((value) => Object.values(value));
-    // eslint-disable-next-line no-shadow
-    const user = data.find((user) => user.id === id);
+    data = JSON.parse(data);
+    // eslint-disable-next-line no-underscore-dangle
+    const user = data.find((curruser) => curruser._id === id);
     if (user) {
       res.send(user);
     } else {
